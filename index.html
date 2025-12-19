@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Info</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background-color: var(--tg-theme-bg-color); color: var(--tg-theme-text-color); font-family: sans-serif; text-align: center; }
+        .card { border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Character Search</h1>
+    <input type="text" id="uid" placeholder="Enter UID">
+    <button onclick="fetchStats()">Get Info</button>
+    <div id="display" class="card">Data will appear here</div>
+
+    <script>
+        // Expand the app to full screen
+        window.Telegram.WebApp.expand();
+
+        async function fetchStats() {
+            const uid = document.getElementById('uid').value;
+            const display = document.getElementById('display');
+            display.innerText = "Loading...";
+
+            try {
+                const res = await fetch(`https://enka.network/api/uid/${uid}`);
+                const data = await res.json();
+                display.innerText = "Found: " + data.playerInfo.nickname;
+            } catch (e) {
+                display.innerText = "Error fetching data.";
+            }
+        }
+    </script>
+</body>
+</html>
